@@ -3,7 +3,7 @@
 import { MathX } from "./utils.js"
 
 /** Węzeł Audio dla palnika 1 */
-const hob1mp3 = new Audio("./resources/Palnik.mp3")
+const hob1mp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Palnik.mp3")
 /** Kontekst Audio dla palnika 1 */
 const hob1ctx = new AudioContext()
 /** Graf Ścieżki Audio dla palnika 1 */
@@ -17,7 +17,7 @@ hob1trc.connect(hob1spn)
     .connect(hob1ctx.destination)
 
 /** Węzeł Audio dla palnika 2 */
-const hob2mp3 = new Audio("./resources/Palnik.mp3")
+const hob2mp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Palnik.mp3")
 /** Kontekst Audio dla palnika 2 */
 const hob2ctx = new AudioContext()
 /** Graf Ścieżki Audio dla palnika 2 */
@@ -31,7 +31,7 @@ hob2trc.connect(hob2spn)
     .connect(hob2ctx.destination)
 
 /** Węzeł Audio dla palnika 3 */
-const hob3mp3 = new Audio("./resources/Palnik.mp3")
+const hob3mp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Palnik.mp3")
 /** Kontekst Audio dla palnika 3 */
 const hob3ctx = new AudioContext()
 /** Graf Ścieżki Audio dla palnika 3 */
@@ -45,7 +45,7 @@ hob3trc.connect(hob3spn)
     .connect(hob3ctx.destination)
 
 /** Węzeł Audio dla palnika 4 */
-const hob4mp3 = new Audio("./resources/Palnik.mp3")
+const hob4mp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Palnik.mp3")
 /** Kontekst Audio dla palnika 4 */
 const hob4ctx = new AudioContext()
 /** Graf Ścieżki Audio dla palnika 4 */
@@ -59,13 +59,13 @@ hob4trc.connect(hob4spn)
     .connect(hob4ctx.destination)
 
 /** Węzeł Audio dla iskrownika */
-const sparkmp3 = new Audio("./resources/Iskrownik.mp3")
+const sparkmp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Iskrownik.mp3")
 
 sparkmp3.volume = 0.5
 
 
 /** Węzeł Audio dla termoobiegu */
-const rotormp3 = new Audio("./resources/Termoobieg-11.mp3")
+const rotormp3 = new Audio("https://scheibig.github.io/KCK-Kuchenka/src/resources/Termoobieg-11.mp3")
 /** Kontekst Audio dla termoobiegu */
 const rotorctx = new AudioContext()
 /** Graf Ścieżki Audio dla termoobiegu */
