@@ -1,0 +1,5 @@
+*.md
+!readme.md
+
+.vscode/
+out/

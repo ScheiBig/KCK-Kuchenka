@@ -1,0 +1,463 @@
+/****************************************
+ *
+ *   Door from upper view
+ *
+ ****************************************/
+
+#up {
+    & .door {
+
+        position: absolute;
+        top: 450px;
+        width: 450px;
+        /* height: 350px; */
+        height: calc(350px * (1 - var(--door-position)));
+        background: linear-gradient(#000a,
+                #0004);
+
+        transform-style: preserve-3d;
+        transition: height 0.1s linear;
+
+        &::before {
+
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            background:
+                linear-gradient(rgba(0, 0, 0, calc(var(--door-position) * 0.5)),
+                    #0000),
+                linear-gradient(hsl(0, 0%, 68%),
+                    #d6d6d6);
+            width: 450px;
+            /* height: 350px; */
+            height: calc(350px * (1 - var(--door-position)));
+            clip-path:
+                polygon(0% 0%,
+                    100% 0%,
+                    100% 100%,
+                    14% 100%,
+                    14% 82%,
+                    86% 82%,
+                    86% 19%,
+                    14% 19%,
+                    14% 100%,
+                    0% 100%);
+            transition:
+                background 0.1s linear,
+                height 0.1s linear;
+        }
+
+        &::after {
+
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            height: calc(16px * var(--door-position));
+            width: 100%;
+            background: #bbb;
+
+            box-shadow:
+                inset 0 -3px 6px 0 rgba(0, 0, 0, calc(0.4 * (1 - var(--door-position)) + 0.2));
+
+            transition:
+                height 0.1s linear,
+                box-shadow 0.1s linear;
+        }
+    }
+
+    & .handle {
+
+        height: 20px;
+        width: 400px;
+
+        background: #bbb;
+        bottom: calc(-30px + 60px * (1 - var(--door-position)));
+        left: 25px;
+        position: absolute;
+        transform: translateZ(-10px);
+
+        border-radius: 6px;
+
+        box-shadow:
+            inset 0 -2px 4px 0 #0004,
+            inset 0px 2px 4px 0 #fff;
+
+
+        transition: bottom 0.1s linear;
+
+        &::before {
+            content: "";
+            display: block;
+            height: calc(10px * var(--door-position));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            box-shadow:
+                inset 0 -4px 4px 0 #0004;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            height: calc(10px * var(--door-position));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            bottom: 20px;
+            right: 50px;
+            box-shadow:
+                inset 0 -4px 4px 0 #0004;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Door from bottom view
+ *
+ ****************************************/
+
+#down {
+    & .door {
+
+        position: absolute;
+        bottom: 450px;
+        width: 450px;
+        /* height: 350px; */
+        height: calc(350px * (1 - var(--door-position)));
+        background: linear-gradient(#0004,
+                #000a);
+
+        transform-style: preserve-3d;
+        transition: height 0.1s linear;
+
+        &::before {
+
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            background:
+                linear-gradient(rgba(0, 0, 0, calc(var(--door-position) * 0.5)) 0%,
+                    #0000 100%),
+                linear-gradient(hsl(0, 0%, 68%) 0%,
+                    #d6d6d6 100%);
+            width: 450px;
+            /* height: 350px; */
+            height: calc(350px * (1 - var(--door-position)));
+            clip-path:
+                polygon(0% 0%,
+                    100% 0%,
+                    100% 100%,
+                    14% 100%,
+                    14% 82%,
+                    86% 82%,
+                    86% 19%,
+                    14% 19%,
+                    14% 100%,
+                    0% 100%);
+            transition:
+                background 0.1s linear,
+                height 0.1s linear;
+        }
+    }
+
+    & .handle {
+
+        height: 20px;
+        width: 400px;
+
+        background: #bbb;
+        top: calc(-30px + 55px * (1 - var(--door-position)));
+        left: 25px;
+        position: absolute;
+
+        border-radius: 6px;
+
+        box-shadow:
+            inset 0 -2px 4px 0 #0004,
+            inset 0px 2px 4px 0 #fff;
+
+        transition: top 0.1s linear;
+
+        &::before {
+            content: "";
+            display: block;
+            height: calc(10px * var(--door-position));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            box-shadow:
+                inset 0 4px 4px 0 #0004;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            height: calc(10px * var(--door-position));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            box-shadow:
+                inset 0 4px 4px 0 #0004;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Door from front view
+ *
+ ****************************************/
+
+#front {
+    & .door {
+
+        position: absolute;
+        bottom: 0;
+        width: 450px;
+        /* height: 350px; */
+        height: calc(350px * var(--door-position));
+        background: linear-gradient(#0000,
+                #000);
+        transition: height 0.1s linear;
+        z-index: 2;
+
+        &::before {
+
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0;
+            background:
+                linear-gradient(#0000 0%,
+                    rgba(0, 0, 0, calc(0.5 - var(--door-position) * 0.5)) 100%),
+                linear-gradient(#d6d6d6 0%,
+                    #d6d6d6 100%);
+            width: 450px;
+            /* height: 350px; */
+            height: calc(350px * var(--door-position));
+            clip-path:
+                polygon(0% 0%,
+                    100% 0%,
+                    100% 100%,
+                    14% 100%,
+                    14% 82%,
+                    86% 82%,
+                    86% 19%,
+                    14% 19%,
+                    14% 100%,
+                    0% 100%);
+
+            transition:
+                background 0.1s linear,
+                height 0.1s linear;
+        }
+
+        &::after {
+
+            content: "";
+            display: block;
+            position: absolute;
+            top: calc(-16px * (1 - var(--door-position)));
+            height: calc(16px * (1 - var(--door-position)));
+            width: 100%;
+            background: #bbb;
+
+            box-shadow:
+                inset 0 -3px 6px 0 rgba(0, 0, 0, calc(0.4 * var(--door-position) + 0.2));
+            transition:
+                top 0.1s linear,
+                height 0.1s linear,
+                box-shadow 0.1s linear;
+        }
+    }
+
+    & .handle {
+
+        height: 20px;
+        width: 400px;
+
+        background: #bbb;
+        top: calc(10px + 15px * var(--door-position));
+        left: 25px;
+        position: absolute;
+
+        border-radius: 6px;
+
+        box-shadow:
+            inset 0 -2px 4px 0 #0004,
+            inset 0px 2px 4px 0 #fff;
+
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, calc(0.2 * var(--door-position))));
+        transition:
+            top 0.1s linear,
+            filter 0.1s linear;
+
+        &::before {
+            content: "";
+            display: block;
+            height: calc(10px * (1 - var(--door-position)));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            box-shadow:
+                inset 0 -4px 4px 0 #0004;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            height: calc(10px * (1 - var(--door-position)));
+            transition: height 0.1s linear;
+            width: 20px;
+            background: #bbb;
+            position: absolute;
+            bottom: 20px;
+            right: 50px;
+            box-shadow:
+                inset 0 -4px 4px 0 #0004;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Door from left view
+ *
+ ****************************************/
+
+#left {
+    & .door {
+
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 16px;
+        height: 350px;
+        background: #d6d6d6;
+        z-index: 2;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+        border-bottom: 4px solid #0004;
+        border-left: 2px solid #0004;
+
+        box-sizing: border-box;
+        transform-origin: 8px 342px;
+        transform: rotate(calc(90deg - (90deg * var(--door-position))));
+        transition: transform 0.1s linear;
+    }
+
+    & .handle {
+
+        height: 20px;
+        width: 20px;
+
+        background: #bbb;
+        top: 25px;
+        right: -30px;
+        position: absolute;
+
+        border-radius: 6px;
+
+        box-shadow:
+            inset 0 -2px 4px 0 #0004,
+            inset 0px 2px 4px 0 #fff;
+
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, calc(0.2 * var(--door-position))));
+
+        &::after {
+            content: "";
+            display: block;
+            height: 8px;
+            width: 10px;
+            background: #bbb;
+            position: absolute;
+            bottom: 6px;
+            right: 20px;
+            box-shadow:
+                inset -4px 0 4px 0 #0004;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Door from right view
+ *
+ ****************************************/
+
+#right {
+    & .door {
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 16px;
+        height: 350px;
+        background: #d6d6d6;
+        z-index: 2;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+        border-bottom: 4px solid #0004;
+        border-right: 2px solid #0004;
+
+        box-sizing: border-box;
+        transform-origin: 8px 342px;
+        transform: rotate(calc(270deg + (90deg * var(--door-position))));
+        transition: transform 0.1s linear;
+    }
+
+    & .handle {
+
+        height: 20px;
+        width: 20px;
+
+        background: #bbb;
+        top: 25px;
+        left: -30px;
+        position: absolute;
+
+        border-radius: 6px;
+
+        box-shadow:
+            inset 0 -2px 4px 0 #0004,
+            inset 0px 2px 4px 0 #fff;
+
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, calc(0.2 * var(--door-position))));
+
+        &::after {
+            content: "";
+            display: block;
+            height: 8px;
+            width: 10px;
+            background: #bbb;
+            position: absolute;
+            bottom: 6px;
+            left: 20px;
+            box-shadow:
+                inset 4px 0 4px 0 #0004;
+        }
+    }
+}

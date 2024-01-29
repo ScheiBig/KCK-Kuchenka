@@ -1,0 +1,715 @@
+/****************************************
+ *
+ *   Burner covers
+ *
+ ****************************************/
+
+.burner {
+
+    background: #222;
+    border-radius: 50%;
+    position: absolute;
+    transform-style: preserve-3d;
+
+
+    &#burn-1 {
+        --size: 108px;
+        height: var(--size);
+        width: var(--size);
+        bottom: 66px;
+        left: 66px;
+    }
+
+    &#burn-2 {
+        --size: 84px;
+        height: var(--size);
+        width: var(--size);
+        top: 78px;
+        left: 78px;
+    }
+
+    &#burn-3 {
+        --size: 84px;
+        height: var(--size);
+        width: var(--size);
+        top: 78px;
+        right: 78px;
+    }
+
+    &#burn-4 {
+        --size: 64px;
+        height: var(--size);
+        width: var(--size);
+        bottom: 123px;
+        right: 88px;
+    }
+
+    &>x-flame {
+        height: var(--size);
+        width: var(--size);
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateZ(-1px);
+    }
+}
+
+
+/****************************************
+ *
+ *   Rendering flame
+ *
+ ****************************************/
+
+.flame {
+    /* --show: 1; */
+    height: 22px;
+    width: 8px;
+    border-top-left-radius: 4px 12px;
+    border-top-right-radius: 4px 12px;
+    /* opacity: 80%; */
+    position: absolute;
+    transform: rotate(var(--r, 0deg)) translateY(calc(0px - var(--size) / 2 + 16px - var(--show, 0) * 26px));
+    /* translate: 0 0 -1px; */
+
+    background: #6298c8;
+    box-shadow:
+        0 0 4px 2px #6298c8,
+        0 0 1px 1px #6298c8;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 16px;
+        width: 4px;
+        top: 6px;
+        left: 2px;
+        border-top-left-radius: 2px 12px;
+        border-top-right-radius: 2px 12px;
+        box-shadow: 0 0 1px 1px #86b8d5;
+        background: #86b8d5;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 14px;
+        width: 2px;
+        top: 10px;
+        left: -10px;
+        border-radius: 50%;
+        background: #0000;
+
+        box-shadow:
+            11.5px 0 1px 0px #b1e3faaa,
+            14.5px 0 1px 0px #b1e3faaa;
+    }
+}
+
+
+/****************************************
+ *
+ *   Burner grates - top
+ *
+ ****************************************/
+
+#left-grate {
+    height: 410px;
+    width: 200px;
+    top: 20px;
+    left: 20px;
+    position: absolute;
+
+    box-sizing: border-box;
+    border: 8px solid #000;
+    border-radius: 16px;
+}
+
+#right-grate {
+    height: 350px;
+    width: 200px;
+    top: 20px;
+    right: 20px;
+    position: absolute;
+
+    box-sizing: border-box;
+    border: 8px solid #000;
+    border-radius: 16px;
+}
+
+#up .grates-1,
+#up .grates-2,
+#up .grates-3 {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+
+}
+
+.grates-1 {
+    & * {
+        background: #000;
+        position: absolute;
+    }
+
+    & :nth-child(1) {
+        height: 12px;
+        width: 100%;
+        top: 184px;
+    }
+}
+
+.grates-2 {
+    & * {
+        background: #222;
+        position: absolute;
+    }
+}
+
+.grates-3 {
+    & * {
+        background: #444;
+        position: absolute;
+    }
+
+    & :nth-child(1) {
+        height: 72px;
+        width: 4px;
+        border-radius: 2px;
+        top: -8px;
+        left: 90px;
+    }
+
+    & :nth-child(2) {
+        height: 4px;
+        width: 72px;
+        border-radius: 2px;
+        top: 90px;
+        left: -8px;
+    }
+
+    & :nth-child(3) {
+        height: 4px;
+        width: 72px;
+        border-radius: 2px;
+        top: 90px;
+        right: -8px;
+    }
+}
+
+#left-grate .grates-3 {
+    & :nth-child(4) {
+        height: 154px;
+        width: 4px;
+        border-radius: 2px;
+        top: 120px;
+        left: 90px;
+    }
+
+    & :nth-child(5) {
+        height: 4px;
+        width: 72px;
+        border-radius: 2px;
+        bottom: 90px;
+        left: -8px;
+    }
+
+    & :nth-child(6) {
+        height: 4px;
+        width: 72px;
+        border-radius: 2px;
+        bottom: 90px;
+        right: -8px;
+    }
+
+    & :nth-child(7) {
+        height: 72px;
+        width: 4px;
+        border-radius: 2px;
+        bottom: -8px;
+        left: 90px;
+    }
+}
+
+#right-grate .grates-3 {
+    & :nth-child(4) {
+        height: 125px;
+        width: 4px;
+        border-radius: 2px;
+        top: 120px;
+        left: 90px;
+    }
+
+    & :nth-child(5) {
+        height: 4px;
+        width: 78px;
+        border-radius: 2px;
+        bottom: 65px;
+        left: -8px;
+    }
+
+    & :nth-child(6) {
+        height: 4px;
+        width: 78px;
+        border-radius: 2px;
+        bottom: 65px;
+        right: -8px;
+    }
+
+    & :nth-child(7) {
+        height: 53px;
+        width: 4px;
+        border-radius: 2px;
+        bottom: -8px;
+        left: 90px;
+    }
+}
+
+
+/****************************************
+ *
+ *   Burner grates - left
+ *
+ ****************************************/
+
+#left .grates-1 {
+    position: absolute;
+    top: -4px;
+    width: 410px;
+    height: 4px;
+    /* border-radius: 2px 2px 0 0; */
+    background: linear-gradient(90deg,
+            #666 0%,
+            #000 8%,
+            #000 92%,
+            #666 100%);
+    left: 20px;
+
+    & .grates-2 {
+        top: -3px;
+        height: 3px;
+        position: absolute;
+        background: #222;
+
+        &.left,
+        &.right {
+            width: 16px;
+            background: linear-gradient(#666, #222);
+        }
+
+        &.left {
+            border-bottom-right-radius: 8px 3px;
+            left: 0;
+        }
+
+        &.left-mid,
+        &.right-mid {
+            width: 20px;
+            border-top-left-radius: 8px 3px;
+            border-top-right-radius: 8px 3px;
+        }
+
+        &.left-mid {
+            left: 90px;
+        }
+
+        &.right-mid {
+            right: 90px;
+        }
+
+        &.middle {
+            width: 28px;
+            border-bottom-right-radius: 8px 3px;
+            border-bottom-left-radius: 8px 3px;
+            left: 191px;
+        }
+
+        &.right {
+            border-bottom-left-radius: 8px 3px;
+            right: 0;
+        }
+    }
+
+    & .grates-3 {
+        top: -8px;
+        height: 6px;
+        background: #444;
+
+        &.left {
+            border-radius: 6px 2px 4px 0;
+            width: 72px;
+            left: 0;
+        }
+
+        &.left-mid {
+            width: 4px;
+            left: 98px;
+            border-radius: 1px 1px 0 0;
+        }
+
+        &.middle {
+            width: 154px;
+            left: 128px;
+            border-radius: 4px 4px 6px 6px;
+        }
+
+        &.right-mid {
+            width: 4px;
+            right: 98px;
+            border-radius: 1px 1px 0 0;
+        }
+
+        &.right {
+            border-radius: 2px 6px 0 4px;
+            width: 72px;
+            right: 0;
+        }
+    }
+
+
+
+    &.right {
+
+        filter: blur(1.5px);
+        background: none;
+
+        & .grates-2.right-mid {
+            right: 125px;
+        }
+
+        & .grates-2.right {
+            right: 60px;
+        }
+
+        & .grates-3.right {
+            right: 60px;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Burner grates - right
+ *
+ ****************************************/
+
+#right .grates-1 {
+    position: absolute;
+    top: -4px;
+    width: 410px;
+    height: 4px;
+    /* border-radius: 2px 2px 0 0; */
+    background: linear-gradient(90deg,
+            #666 0%,
+            #000 8%,
+            #000 92%,
+            #666 100%);
+    left: 20px;
+
+    & .grates-2 {
+        top: -3px;
+        height: 3px;
+        position: absolute;
+        background: #222;
+
+        &.left,
+        &.right {
+            width: 16px;
+            background: linear-gradient(#666, #222);
+        }
+
+        &.left {
+            border-bottom-right-radius: 8px 3px;
+            left: 0;
+        }
+
+        &.left-mid,
+        &.right-mid {
+            width: 20px;
+            border-top-left-radius: 8px 3px;
+            border-top-right-radius: 8px 3px;
+        }
+
+        &.left-mid {
+            left: 65px;
+        }
+
+        &.middle {
+            width: 28px;
+            left: 131px;
+            border-bottom-right-radius: 8px 3px;
+            border-bottom-left-radius: 8px 3px;
+        }
+
+        &.right-mid {
+            right: 90px;
+        }
+
+        &.right {
+            border-bottom-left-radius: 8px 3px;
+            right: 0;
+        }
+    }
+
+    & .grates-3 {
+        top: -8px;
+        height: 6px;
+        background: #444;
+
+        &.left {
+            left: 0;
+            width: 53px;
+            border-radius: 6px 2px 4px 0;
+        }
+
+        &.left-mid {
+            left: 73px;
+            width: 4px;
+            border-radius: 1px 1px 0 0;
+        }
+
+        &.middle {
+            left: 97px;
+            width: 125px;
+            border-radius: 4px 4px 6px 6px;
+        }
+
+        &.right-mid {
+            right: 98px;
+            width: 4px;
+            border-radius: 1px 1px 0 0;
+        }
+
+        &.right {
+            right: 0;
+            width: 72px;
+            border-radius: 2px 6px 0 4px;
+        }
+    }
+
+
+
+    &.left {
+
+        filter: blur(1.5px);
+
+        & .grates-2.left {
+            left: 0;
+        }
+
+        & .grates-2.left-mid {
+            right: 125px;
+        }
+
+        & .grates-3.left {
+            left: 0;
+        }
+
+        & .grates-3.middle {
+            width: 154px;
+            left: 128px;
+        }
+    }
+    
+    &.right {
+        width: 350px;
+        left: 80px;
+    }
+}
+
+
+/****************************************
+ *
+ *   Burner grates - front
+ *
+ ****************************************/
+
+#front .grates-1 {
+    position: absolute;
+    top: -4px;
+    width: 200px;
+    height: 4px;
+    /* border-radius: 2px 2px 0 0; */
+    background: linear-gradient(90deg,
+            #666 0%,
+            #000 8%,
+            #000 92%,
+            #666 100%);
+
+    &.left {
+        left: 20px;
+    }
+
+    &.right {
+        right: 20px;
+    }
+
+    & .grates-2 {
+        top: -3px;
+        height: 3px;
+        position: absolute;
+        background: #222;
+
+        &.left,
+        &.right {
+            width: 16px;
+            background: linear-gradient(#666, #222);
+        }
+
+        &.left {
+            border-bottom-right-radius: 8px 3px;
+            left: 0;
+        }
+        
+        &.middle {
+            width: 20px;
+            left: 90px;
+            border-top-left-radius: 8px 3px;
+            border-top-right-radius: 8px 3px;
+        }
+
+        &.right {
+            border-bottom-left-radius: 8px 3px;
+            right: 0;
+        }
+    }
+
+    & .grates-3 {
+        top: -8px;
+        height: 6px;
+        background: #444;
+
+        &.left {
+            border-radius: 6px 2px 4px 0;
+            left: 0;
+        }
+
+        &.middle {
+            width: 4px;
+            border-radius: 1px 1px 0 0;
+            left: 98px;
+        }
+
+        &.right {
+            border-radius: 2px 6px 0 4px;
+            right: 0;
+        }
+    }
+
+    &.left {
+        & .grates-3:not(.middle) {
+            width: 72px;
+        }
+    }
+
+    &.right {
+        & .grates-3:not(.middle) {
+            width: 78px;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Burner grates - back
+ *
+ ****************************************/
+
+#back .grates-1 {
+    position: absolute;
+    top: -4px;
+    width: 200px;
+    height: 4px;
+    /* border-radius: 2px 2px 0 0; */
+    background: linear-gradient(90deg,
+            #666 0%,
+            #000 8%,
+            #000 92%,
+            #666 100%);
+
+    &.right {
+        left: 20px;
+    }
+
+    &.left {
+        right: 20px;
+    }
+
+    & .grates-2 {
+        top: -3px;
+        height: 3px;
+        position: absolute;
+        background: #222;
+
+        &.left,
+        &.right {
+            width: 16px;
+            background: linear-gradient(#666, #222);
+        }
+
+        &.left {
+            border-bottom-right-radius: 8px 3px;
+            left: 0;
+        }
+
+        &.middle {
+            width: 20px;
+            left: 90px;
+            border-top-left-radius: 8px 3px;
+            border-top-right-radius: 8px 3px;
+        }
+
+        &.right {
+            border-bottom-left-radius: 8px 3px;
+            right: 0;
+        }
+    }
+
+    & .grates-3 {
+        top: -8px;
+        height: 6px;
+        background: #444;
+
+        &.left {
+            border-radius: 6px 2px 4px 0;
+            left: 0;
+        }
+
+        &.middle {
+            width: 4px;
+            border-radius: 1px 1px 0 0;
+            left: 98px;
+        }
+
+        &.right {
+            border-radius: 2px 6px 0 4px;
+            right: 0;
+        }
+    }
+
+    &.left {
+        & .grates-3:not(.middle) {
+            width: 72px;
+        }
+    }
+
+    &.right {
+
+        & .grates-3:not(.middle):not(.far) {
+            
+            width: 72px;
+        }
+
+        & .grates-3.far:not(.middle) {
+            width: 78px;
+            filter: blur(1.5px);
+        }
+    }
+}

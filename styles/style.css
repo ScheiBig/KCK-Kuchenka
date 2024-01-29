@@ -1,0 +1,550 @@
+@import url(./doors.css);
+@import url(./shelves.css);
+@import url(./hobs.css);
+@import url(./stickouts.css);
+
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+@font-face {
+    font-family: "Seven Segment";
+    src: url("../resources/Seven Segment.ttf")
+}
+
+@font-face {
+    font-family: "Segmental";
+    src: url("../resources/Segmental_ex.ttf")
+}
+
+:root {
+    background: #73937e;
+}
+
+#hob-oven-range {
+    height: 1350px;
+    width: 1350px;
+    position: relative;
+}
+
+.plane {
+    background: #d6d6d6;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.face {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    &[data-hidden] {
+        display: none;
+    }
+
+    & {
+        background-repeat: no-repeat;
+        background-size: 533px;
+        background-position: center;
+    }
+
+    &#up {
+        & .body {
+            background: #d6d6d6;
+        }
+    }
+
+    &#down {
+        & .body {
+            background: #d6d6d6;
+        }
+    }
+
+    &#left {
+        & .body::after {
+            content: "";
+            display: block;
+            height: 100%;
+            background: #d6d6d6;
+
+            clip-path: polygon(0px 0px,
+                    450px 0px,
+                    450px 84px,
+                    434px 84px,
+                    434px 434px,
+                    450px 434px,
+                    450px 450px,
+                    0px 450px);
+        }
+    }
+
+    &#right {
+        & .body::after {
+            content: "";
+            display: block;
+            height: 100%;
+            background: #d6d6d6;
+
+            clip-path: polygon(0px 0px,
+                    450px 0px,
+                    450px 450px,
+                    0px 450px,
+                    0px 434px,
+                    16px 434px,
+                    16px 84px,
+                    0px 84px);
+        }
+    }
+
+    &#front {}
+
+    &#back {
+        & .body {
+            background: #d6d6d6;
+        }
+    }
+
+    & .body {
+        height: 450px;
+        width: 450px;
+        top: 450px;
+        left: 450px;
+        position: absolute;
+    }
+}
+
+#knobs {
+    height: 66px;
+    width: 200px;
+    bottom: 8px;
+    right: 20px;
+    position: absolute;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#panel {
+    height: 84px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #d6d6d6;
+
+    & #program {
+        height: 48px;
+        width: 48px;
+    }
+
+    & x-timer {
+        height: 60px;
+        width: 116px;
+    }
+
+    & #temperature {
+        height: 48px;
+        width: 48px;
+    }
+
+    & #bulb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        position: absolute;
+        box-sizing: border-box;
+
+        background: #200;
+        right: 120px;
+        top: 16px;
+    }
+}
+
+#gap {
+    height: 16px;
+    overflow: hidden;
+    background: linear-gradient(#d6d6d6 0%,
+            #333 100%);
+
+    &::after {
+        content: "";
+        display: block;
+        height: 200%;
+        width: 110%;
+        margin: 0 -5%;
+        box-shadow: inset 0px 0px 6px 7px #0008;
+    }
+}
+
+#inside {
+    background: #333;
+    height: calc(100% - 16px - 84px);
+    position: relative;
+
+    & #seal {
+        height: calc(100% - 64px);
+        width: calc(100% - 96px);
+        position: absolute;
+        top: 32px;
+        left: 48px;
+        border-radius: 24px;
+        box-sizing: border-box;
+        border: 8px solid #000;
+        box-shadow: 2px 2px 2px 0 #0008;
+
+        &::before {
+            content: "";
+            display: block;
+            height: calc(100% + 8px);
+            width: calc(100% + 8px);
+            top: -4px;
+            left: -4px;
+            position: absolute;
+            border-radius: 20px;
+            box-shadow:
+                -2px -2px 4px 1px #fff3,
+                inset -2px -2px 2px 1px #fff3;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            top: -16px;
+            left: -16px;
+            position: absolute;
+            height: calc(100% + 32px);
+            width: calc(100% + 32px);
+            border: 8px solid #333;
+            border-radius: 32px;
+        }
+    }
+}
+
+#backplate {
+    height: 100%;
+    width: 100%;
+    background: #111;
+    border-radius: 16px;
+    position: relative;
+}
+
+#rotor {
+    height: 220px;
+    width: 220px;
+    position: absolute;
+    top: 25px;
+    left: 59px;
+    border-radius: 50%;
+
+    background: #000;
+
+    & .blade {
+        position: absolute;
+        height: 90px;
+        width: 30px;
+        top: 65px;
+        left: 95px;
+        border-top-right-radius: 100%;
+        background: #bbb;
+
+        border-top: 4px solid #aaa;
+        border-right: 4px solid #aaa;
+
+        transform:
+            rotate(var(--r, 0deg)) translate(12px, -40px);
+    }
+
+    & :nth-child(2) {
+        --r: 60deg;
+    }
+
+    & :nth-child(3) {
+        --r: 120deg;
+    }
+
+    & :nth-child(4) {
+        --r: 180deg;
+    }
+
+    & :nth-child(5) {
+        --r: 240deg;
+    }
+
+    & :nth-child(6) {
+        --r: 300deg;
+    }
+
+    &[data-spin] {
+        animation: rotor 30ms infinite linear;
+    }
+}
+
+@keyframes rotor {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+& #cover {
+    height: 200px;
+    width: 200px;
+    top: 35px;
+    left: 69px;
+    position: absolute;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 24px solid #222;
+
+    background:
+        repeating-radial-gradient(#0000 0px,
+            #0000 7px,
+            #222 8px,
+            #222 11px,
+            #0000 12px),
+        repeating-conic-gradient(#0000 0deg,
+            #0000 35deg,
+            #222 36deg,
+            #222 44deg,
+            #0000 45deg),
+        radial-gradient(#222 0%,
+            #222 30%,
+            #0000 31%,
+            #0000 100%);
+}
+
+#down .body {
+
+    & div.leg {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(-45deg,
+                #222,
+                #444);
+        border: 2px solid #000;
+        position: absolute;
+
+        --off: 32px;
+
+        &:nth-child(even) {
+            right: var(--off);
+        }
+
+        &:nth-child(odd) {
+            left: var(--off);
+        }
+
+        &:nth-child(n + 3) {
+            bottom: var(--off);
+        }
+
+        &:nth-child(-n + 2) {
+            top: var(--off);
+        }
+    }
+}
+
+:has(> #temperature) {
+    position: relative;
+    height: 50px;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        bottom: -4px;
+        left: -4px;
+        border-radius: 50%;
+        background:
+            radial-gradient(#d6d6d6 0px,
+                #d6d6d6 26px,
+                #0000 26px,
+                #0000),
+            repeating-conic-gradient(#0000 0deg,
+                #0000 3deg,
+                #0008 3.5deg,
+                #0008 4.5deg,
+                #0000 5deg);
+        transform: rotate(1deg);
+        clip-path: polygon(48% 0%,
+                52% 0%,
+                52% 49%,
+                96% 0%,
+                100% 0%,
+                100% 100%,
+                0% 100%,
+                0% 49%,
+                49% 49%);
+    }
+
+    &>div {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        &>div {
+            font-size: 5px;
+            font-family: 'Varela Round', sans-serif;
+            color: #0008;
+            position: absolute;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+
+            &:nth-child(1) {
+                transform: rotate(-180deg) translateY(34px) rotate(180deg);
+            }
+
+            &:nth-child(2) {
+                transform: rotate(-135deg) translateY(34px) rotate(135deg);
+            }
+
+            &:nth-child(3) {
+                transform: rotate(-90deg) translateY(34px) rotate(90deg);
+            }
+
+            &:nth-child(4) {
+                transform: rotate(-45deg) translateY(34px) rotate(45deg);
+            }
+
+            &:nth-child(5) {
+                transform: rotate(-0deg) translateY(34px) rotate(0deg);
+            }
+
+            &:nth-child(6) {
+                transform: rotate(-315deg) translateY(34px) rotate(315deg);
+            }
+
+            &:nth-child(7) {
+                transform: rotate(-270deg) translateY(34px) rotate(270deg);
+            }
+        }
+    }
+}
+
+:has(> #program) {
+    position: relative;
+    height: 50px;
+
+    &>div {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: rotate(-1deg);
+
+        &>img {
+            font-size: 5px;
+            font-family: 'Varela Round', sans-serif;
+            color: #0008;
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            top: calc(50% - 6px);
+            left: calc(50% - 6px);
+
+            &:nth-child(1) {
+                transform: rotate(-180deg) translateY(32px) rotate(180deg);
+            }
+
+            &:nth-child(2) {
+                transform: rotate(-135deg) translateY(34px) rotate(135deg);
+            }
+
+            &:nth-child(3) {
+                transform: rotate(-90deg) translateY(32px) rotate(90deg);
+            }
+
+            &:nth-child(4) {
+                transform: rotate(-45deg) translateY(34px) rotate(45deg);
+            }
+
+            &:nth-child(5) {
+                transform: rotate(-0deg) translateY(32px) rotate(0deg);
+            }
+
+            &:nth-child(6) {
+                transform: rotate(-315deg) translateY(34px) rotate(315deg);
+            }
+
+            &:nth-child(7) {
+                transform: rotate(-270deg) translateY(32px) rotate(270deg);
+            }
+
+            &:nth-child(8) {
+                transform: rotate(-225deg) translateY(34px) rotate(225deg);
+            }
+        }
+    }
+}
+
+#knobs :has(> x-knob) {
+    position: relative;
+    height: 32px;
+    width: 32px;
+
+    &>div {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        &>div {
+            font-size: 8px;
+            font-family: 'Varela Round', sans-serif;
+            filter: grayscale() brightness(0.75) contrast(2);
+            color: #0008;
+            position: absolute;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+
+            &:nth-child(1) {
+                transform: rotate(-180deg) translateY(20px) rotate(180deg);
+            }
+            
+            &:nth-child(2) {
+                transform: rotate(-270deg) translateY(20px) rotate(270deg);
+            }
+            
+            &:nth-child(3) {
+                transform: rotate(-0deg) translateY(22px) rotate(0deg);
+                font-size: 6px;
+            }
+        }
+
+        &>img {
+            font-size: 5px;
+            font-family: 'Varela Round', sans-serif;
+            color: #0008;
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            top: calc(50% - 6px);
+            left: calc(50% - 6px);
+            transform: rotate(-225deg) translateY(24px) rotate(225deg);
+
+        }
+    }
+}

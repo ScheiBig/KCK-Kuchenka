@@ -1,0 +1,548 @@
+@import url(./shelves-transformations.css);
+
+/****************************************
+ *
+ *   Upper view shelves
+ *
+ ****************************************/
+
+#up {
+
+    & .shelf {
+        position: absolute;
+        top: 56px;
+        left: 56px;
+        height: 338px;
+        width: 338px;
+        border-radius: 24px;
+        box-sizing: border-box;
+
+        transition: filter 0.1s linear,
+            top 0.1s linear;
+
+        filter: blur(calc(2px * var(--b))) brightness(calc(1 - var(--b) * 0.1));
+    }
+
+    & .tray {
+
+        background: linear-gradient(-45deg,
+                #111,
+                #444);
+
+        border: 16px solid #000;
+
+        box-shadow: inset 16px 0 16px 0 #0008,
+            inset -16px 0 16px 0 #0008;
+
+        &.deep {
+
+            background: linear-gradient(-45deg,
+                    #111,
+                    #333);
+        }
+    }
+
+    & .rack {
+        /* border: 6px solid #bbb; */
+        border: 6px solid #999;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 4px 22px 0;
+
+        &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 18px;
+            box-shadow: 2px 2px 4px 0 #fff;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            bottom: -6px;
+            left: -6px;
+            border-radius: 24px;
+            box-shadow: inset 2px 2px 4px 0 #fff;
+        }
+
+        & div {
+            height: calc(100% + 12px);
+            margin-top: -4px;
+            width: 6px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            background: #bbb;
+            position: relative;
+            box-shadow:
+                inset -2px 0 2px 0 #0004,
+                inset 2px 0 2px 0 #fff8;
+        }
+    }
+}
+
+
+/****************************************
+ *
+ *   Bottom  view shelves
+ *
+ ****************************************/
+
+#down {
+
+    & .shelf {
+        position: absolute;
+        top: 56px;
+        left: 56px;
+        height: 338px;
+        width: 338px;
+        border-radius: 24px;
+        box-sizing: border-box;
+
+        transition: filter 0.1s linear,
+            top 0.1s linear;
+
+    }
+
+    & .tray {
+
+        background: linear-gradient(-45deg,
+                #000,
+                #333);
+
+        border: 16px solid #333;
+
+        box-shadow: inset 16px 0 16px 0 #fff3,
+            inset -16px 0 16px 0 #fff3;
+
+        &.deep {
+
+            border: 16px solid #444;
+        }
+    }
+
+    & .rack {
+        /* border: 6px solid #bbb; */
+        border: 6px solid #999;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 4px 22px 0;
+
+        &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 18px;
+            box-shadow: 2px 2px 4px 0 #fff;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            bottom: -6px;
+            left: -6px;
+            border-radius: 24px;
+            box-shadow: inset 2px 2px 4px 0 #fff;
+        }
+
+        & div {
+            height: calc(100% + 12px);
+            margin-top: -4px;
+            width: 6px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            background: #bbb;
+            position: relative;
+            box-shadow:
+                inset -2px 0 2px 0 #0004,
+                inset 2px 0 2px 0 #fff8;
+        }
+    }
+}
+
+/****************************************
+ *
+ *   Front view rails and shelves
+ *
+ ****************************************/
+
+#frontplate {
+    height: 100%;
+    width: 100%;
+    border-radius: 16px;
+    position: absolute;
+    top: 0;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+
+
+    /**********
+     *  Rails
+     **********/
+
+    & .rail {
+        height: 22px;
+        width: 100%;
+        position: absolute;
+
+        &#rail-1 {
+            top: 20px;
+        }
+
+        &#rail-2 {
+            top: 65px;
+        }
+
+        &#rail-3 {
+            top: 110px;
+        }
+
+        &#rail-4 {
+            top: 155px;
+        }
+
+        &#rail-5 {
+            top: 200px;
+        }
+
+        & .right {
+            &::before {
+                content: "";
+                display: block;
+                height: 6px;
+                width: 18px;
+                background: #bbb;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset -1px 2px 2px 0 #fff;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                height: 6px;
+                width: 18px;
+                background: #bbb;
+                top: 16px;
+                left: 0;
+                position: absolute;
+
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset -1px 2px 2px 0 #fff;
+            }
+        }
+
+        & .left {
+            &::before {
+                content: "";
+                display: block;
+                height: 6px;
+                width: 18px;
+                background: #bbb;
+                top: 0;
+                right: 0;
+                position: absolute;
+
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 1px 2px 2px 0 #fff;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                height: 6px;
+                width: 18px;
+                background: #bbb;
+                top: 16px;
+                right: 0;
+                position: absolute;
+
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 1px 2px 2px 0 #fff;
+            }
+        }
+    }
+
+
+    /**********
+     *  Shelves
+     **********/
+
+    & .shelf {
+        position: absolute;
+        width: 100%;
+        box-sizing: border-box;
+
+        transition: filter 0.1s linear,
+            top 0.1s linear;
+
+        &.rack {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            height: 22px;
+            position: relative;
+
+            padding: 4px 22px 0;
+
+            & div {
+                height: 6px;
+                width: 6px;
+                box-sizing: border-box;
+                border-radius: 50%;
+                background: #bbb;
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 0 2px 2px 0 #fff;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                height: 6px;
+                padding: 0 12px;
+                position: absolute;
+                top: 10px;
+                left: 1px;
+                right: 1px;
+                border-radius: 3px;
+                box-sizing: border-box;
+                background: #bbb;
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 0 2px 2px 0 #fff;
+            }
+        }
+
+        &.tray {
+            padding: 10px 22px 0;
+            box-sizing: border-box;
+
+            &::before {
+                content: "";
+                display: block;
+                height: 100%;
+                width: 100%;
+                background: #444;
+                border-radius: 6px;
+
+                box-shadow:
+                    inset 0 -2px 4px 0 #0008;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                height: 6px;
+                top: 10px;
+                left: 1px;
+                right: 1px;
+                background: #444;
+                border-radius: 6px;
+
+                box-shadow:
+                    inset 0 2px 2px 0 #fff2,
+                    inset 0 -2px 2px 0 #0008;
+            }
+
+            &.shallow {
+                height: 22px;
+            }
+
+            &.deep {
+                height: 32px;
+            }
+        }
+
+        &[data-outside] {
+            filter: blur(2px) drop-shadow(0 2px 6px black);
+
+        }
+    }
+}
+
+body[data-oven="on"] #frontplate::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: radial-gradient(circle at top left,
+        #ffda6a66,
+        #00000000
+    );
+    border-radius: 16px;
+    -webkit-backdrop-filter: brightness(1.1);
+    backdrop-filter: brightness(1.1);
+}
+
+
+
+/****************************************
+ *
+ *   Side view rails and shelves
+ *
+ ****************************************/
+
+#left,
+#right {
+
+    & .shelves {
+        position: absolute;
+        top: 140px;
+        width: 338px;
+        left: 56px;
+    }
+
+    & .shelf {
+        position: absolute;
+        width: 100%;
+        box-sizing: border-box;
+
+        transition: filter 0.1s linear,
+            top 0.1s linear,
+            left 0.1s linear,
+            right 0.1s linear;
+
+        &.rack {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            height: 22px;
+
+            /* padding: 4px 22px 0; */
+
+            & div {
+                height: 6px;
+                width: 6px;
+                box-sizing: border-box;
+                border-radius: 50%;
+                background: #bbb;
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 0 2px 2px 0 #fff;
+            }
+
+            &::before {
+                content: "";
+                display: block;
+                height: 6px;
+                position: absolute;
+                top: 4px;
+                left: 2px;
+                right: 2px;
+                border-radius: 3px;
+                background: #999;
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 0 2px 2px 0 #fff;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                height: 6px;
+                padding: 0 12px;
+                position: absolute;
+                top: 10px;
+                left: 1px;
+                right: 1px;
+                border-radius: 3px;
+                box-sizing: border-box;
+                background: #bbb;
+                box-shadow:
+                    inset 0 -2px 2px 0 #0004,
+                    inset 0 2px 2px 0 #fff;
+            }
+        }
+
+        &.tray {
+            padding: 10px 22px 0;
+            box-sizing: border-box;
+
+            &::before {
+                content: "";
+                display: block;
+                height: 100%;
+                width: 100%;
+                background: #444;
+                border-radius: 6px;
+
+                box-shadow:
+                    inset 0 -2px 4px 0 #0008;
+            }
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                height: 6px;
+                top: 10px;
+                left: 1px;
+                right: 1px;
+                background: #444;
+                border-radius: 6px;
+
+                box-shadow:
+                    inset 0 2px 2px 0 #fff2,
+                    inset 0 -2px 2px 0 #0008;
+            }
+
+            &.shallow {
+                height: 22px;
+            }
+
+            &.deep {
+                height: 32px;
+            }
+        }
+    }
+}
+
+#left .shelf {
+    left: 0;
+}
+
+#right .shelf {
+    right: 0;
+}

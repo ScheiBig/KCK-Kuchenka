@@ -1,0 +1,106 @@
+/****************************************
+ *
+ *   View "above" - used by top and bottom views
+ *
+ ****************************************/
+
+[data-deep-tray-position="1"] .above.shelf.tray.deep,
+[data-shallow-tray-position="1"] .above.shelf.tray.shallow,
+[data-rack-position="1"] .above.shelf.rack {
+    --b: 0;
+}
+
+[data-deep-tray-position="2"] .above.shelf.tray.deep,
+[data-shallow-tray-position="2"] .above.shelf.tray.shallow,
+[data-rack-position="2"] .above.shelf.rack {
+    --b: 0.25;
+}
+
+[data-deep-tray-position="3"] .above.shelf.tray.deep,
+[data-shallow-tray-position="3"] .above.shelf.tray.shallow,
+[data-rack-position="3"] .above.shelf.rack {
+    --b: 0.5;
+}
+
+[data-deep-tray-position="4"] .above.shelf.tray.deep,
+[data-shallow-tray-position="4"] .above.shelf.tray.shallow,
+[data-rack-position="4"] .above.shelf.rack {
+    --b: 0.75;
+}
+
+[data-deep-tray-position="5"] .above.shelf.tray.deep,
+[data-shallow-tray-position="5"] .above.shelf.tray.shallow,
+[data-rack-position="5"] .above.shelf.rack {
+    --b: 1;
+}
+
+[data-shelf-outside="deepTray"] #up .above.shelf.tray.deep,
+[data-shelf-outside="shallowTray"] #up .above.shelf.tray.shallow,
+[data-shelf-outside="rack"] #up .above.shelf.rack {
+    top: calc(450px + 56px);
+    filter: blur(calc(2px * var(--b))) brightness(calc(1 - var(--b) * 0.1));
+}
+
+[data-shelf-outside="deepTray"] #down .above.shelf.tray.deep,
+[data-shelf-outside="shallowTray"] #down .above.shelf.tray.shallow,
+[data-shelf-outside="rack"] #down .above.shelf.rack {
+    top: auto;
+    bottom: calc(450px + 56px);
+    filter: blur(calc(2px * (1 - var(--b)))) brightness(calc(0.9 +  var(--b) * 0.1));
+}
+
+
+/****************************************
+ *
+ *   View "front" - used by front and side views
+ *
+ ****************************************/
+
+[data-deep-tray-position="1"] .front.shelf.tray.deep,
+[data-shallow-tray-position="1"] .front.shelf.tray.shallow,
+[data-rack-position="1"] .front.shelf.rack {
+    top: 20px;
+}
+
+[data-deep-tray-position="2"] .front.shelf.tray.deep,
+[data-shallow-tray-position="2"] .front.shelf.tray.shallow,
+[data-rack-position="2"] .front.shelf.rack {
+    top: 65px;
+}
+
+[data-deep-tray-position="3"] .front.shelf.tray.deep,
+[data-shallow-tray-position="3"] .front.shelf.tray.shallow,
+[data-rack-position="3"] .front.shelf.rack {
+    top: 110px;
+}
+
+[data-deep-tray-position="4"] .front.shelf.tray.deep,
+[data-shallow-tray-position="4"] .front.shelf.tray.shallow,
+[data-rack-position="4"] .front.shelf.rack {
+    top: 155px;
+}
+
+[data-deep-tray-position="5"] .front.shelf.tray.deep,
+[data-shallow-tray-position="5"] .front.shelf.tray.shallow,
+[data-rack-position="5"] .front.shelf.rack {
+    top: 200px;
+}
+
+[data-shelf-outside="deepTray"] #front .front.shelf.tray.deep,
+[data-shelf-outside="shallowTray"] #front .front.shelf.tray.shallow,
+[data-shelf-outside="rack"] #front .front.shelf.rack {
+    filter: drop-shadow(0 2px 16px #000a) blur(2px) drop-shadow(0 2px 16px #000a) brightness(1.5);
+    z-index: 10;
+}
+
+[data-shelf-outside="deepTray"] #left .front.shelf.tray.deep,
+[data-shelf-outside="shallowTray"] #left .front.shelf.tray.shallow,
+[data-shelf-outside="rack"] #left .front.shelf.rack {
+    left: 450px;
+}
+
+[data-shelf-outside="deepTray"] #right .front.shelf.tray.deep,
+[data-shelf-outside="shallowTray"] #right .front.shelf.tray.shallow,
+[data-shelf-outside="rack"] #right .front.shelf.rack {
+    right: 450px;
+}
