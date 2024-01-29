@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: ComponentKnob</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: ComponentKnob</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-knob.html">knob</a>~</span>ComponentKnob<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Pokrętło - komponent reprezentuje pokrętło, które zapewnia interakcję poprzez obrót trzymając
+przycisk myszy, pokrętło obróci się w taki sposób, aby znacznik pokrętła wskazywał pozycję kursora.
+Bieżącą wartość można śledzić bezpośrednio poprzez właściwość <code>value</code> lub reaktywnie poprzez
+zdarzenie <code>rotate</code>. Knob zakłada, że użytkownik będzie je obracać zgodnie z ruchem wskazówek
+zegara od wartości <code>min</code> do <code>max</code>.</p>
+<ol>
+<li>
+<p>Jakie urządzenie jest symulowane.
+Pokrętło można umieścić albo na enkoderze (tryb nieskończonego obrotu),
+który może obracać się w nieskończoność, albo na potencjometrze (tryb ograniczonego obrotu) -
+albo o mniejszym lub jednym obrocie, albo wieloobrotowym.</p>
+<ol>
+<li>
+<p>W „trybie enkodera” pokrętło może się swobodnie obracać, bez pozycji początkowej
+i końcowej. W tym trybie <code>value</code> zostanie ustawiona pomiędzy <code>min</code> a <code>max</code>,
+zawijając się od jednego ekstremum do drugiego podczas przejścia <code>from</code> kąta.</p>
+</li>
+<li>
+<p>W „trybie potencjometru wieloobrotowego” pokrętło może wykonywać tylko zadany zakres
+ruchu – <code>value</code> od <code>min</code> do <code>max</code> i zatrzymywać obrót poza tymi punktami.
+Pokrętło może wykonywać wiele obrotów, co koreluje z właściwością <code>lap</code>, która opisuje
+„o ile <code>value</code> zmienia się przy każdym pełnym obrocie pokrętła&quot;.</p>
+</li>
+<li>
+<p>W „trybie potencjometru jednoobrotowego” pokrętło może obracać się tylko pomiędzy
+kątami <code>from</code> i <code>do</code>. W tym trybie można osiągnąć pełny obrót (<code>from === to</code>)
+lub tylko jego część.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Jaki &quot;typ&quot; urządzenia jest symulowany
+Pokrętło można umieścić albo na urządzeniu analogowym, które może się swobodnie obracać,
+albo na urządzeniu dyskretnym, które może osiągać tylko określone kąty,
+albo na urządzeniu cyfrowym, które obracając się jak analogowe,
+nadal może osiągnąć tylko jedną z pozycji, do której zostanie przyciągnięte.</p>
+<ol>
+<li>
+<p>Jako „typ analogowy” pokrętło może obracać się w dowolną możliwą pozycję,
+zatem <code>value</code> może być dowolną liczbą rzeczywistą (zmiennoprzecinkową)
+pomiędzy <code>min</code> i <code>max</code>.</p>
+</li>
+<li>
+<p>Jako „typ dyskretny”, pokrętło może osiągać tylko wartości, które są przekazywane do
+właściwości <code>positions</code> (atrybut jest oddzieloną przecinkami listą możliwych pozycji,
+natomiast pole jest ich tablicą), zatem obrót pokrętła odbywa się tylko na granicach
+pomiędzy dowolnymi dwoma sąsiednimi polami.</p>
+</li>
+<li>
+<p>Jako „typ cyfrowy” pokrętło może nadal obracać się jak urządzenie analogowe,
+gdy jest trzymane (podczas naciśnięcia myszy), ale gdy je puścisz,
+powróci do najbliższej pozycji. W tym trybie zasadnicza <code>value</code>” zachowuje się
+dokładnie tak, jak w przypadku typu dyskretnego, płynny obrót jest tylko wizualny.</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>Dla każdego trybu/typu pokrętła możesz określić następujące właściwości:</p>
+<ul>
+<li><code>from</code> - kąt początkowy w stopniach, w zakresie [0, 360); domyślnie wynosi 0,</li>
+<li><code>min</code> - minimalna liczba, jaką może osiągnąć <code>value</code>; domyślnie wynosi 0,</li>
+<li><code>value</code> - aktualna wartość, którą reprezentuje pokrętło; domyślnie jest to <code>min</code>,</li>
+<li><code>max</code> - maksymalna liczba, jaką może osiągnąć <code>value</code>; domyślnie 360.</li>
+</ul>
+<p>Pamiętaj, że musisz przestrzegać założenia: <code>min</code> &lt;= <code>value</code> &lt;= <code>max</code>
+- w przeciwnym razie zostanie zwrócony błąd.</p>
+<p>Dodatkowe właściwości definiują dokładne zachowanie pokrętła o tym priorytecie.</p>
+<p>Dla trybów:</p>
+<ul>
+<li><code>infinite</code> - jeśli atrybut jest obecny lub właściwość jest ustawiona na true,
+pokrętło zawsze będzie zachowywać się w &quot;trybie enkodera&quot; - właściwości <code>lap</code> i <code>to</code>
+będą ignorowane nawet jeśli są obecne;
+domyślnie jest ustawione na <code>null</code> (not truthy).</li>
+<li><code>to</code> - w przypadku braku atrybutu <code>infinite</code> / ustawionego na false oraz ustawionego <code>to</code>
+to pokrętło będzie zawsze zachowywać się w trybie &quot;potencjometru jednoobrotowego&quot; -
+właściwość <code>lap</code> będzie ignorowana;
+domyślnie ustawiona jest wartość <code>null</code>.</li>
+<li><code>lap</code> - jeśli brakuje <code>infinite</code> (/ false) i <code>to</code> (<code>null</code>/<code>undefined</code>), to pokrętło będzie
+zawsze zachowywać się w &quot;trybie potencjometru jednoobrotowego&quot;;
+domyślnie jest to <code>max - min</code>.</li>
+</ul>
+<p>Dla typów:</p>
+<ul>
+<li><code>positions</code> - atrybut, jeśli jest ustawiony, musi być ustawiony na rozdzieloną przecinkami
+listę unikalnych wartości, natomiast pole będzie reprezentowane jako tablica
+tych wartości, w takim przypadku pokrętło będzie działać
+albo jako „typ dyskretny” lub „typ cyfrowy”, w zależności od właściwości <code>sticky</code>;
+domyślnie ustawiona jest wartość <code>null</code>.</li>
+<li><code>sticky</code> - atrybut, jeśli występuje / pole ma wartość true, będzie określał „typ cyfrowy”,
+w przeciwnym razie pokrętło będzie „typu dyskretnego”;
+domyślnie ma wartość <code>null</code> (not truthy) i będzie ignorowana, jeśli brakuje <code>positions</code>.</li>
+</ul>
+<p>W przypadku braku atrybutu <code>positions</code>, pokrętło jest <code>analog type</code>.</p>
+<hr>
+<p>Jako komponent, <code>&lt;x-knob&gt;</code> zapewnia jeden <code>slot</code>, które zastępuje znacznik pokrętła (wiper),
+jeśli jest wypełniony; również dwie <code>part</code>s są określone on top of the <code>:host</code>:</p>
+<ul>
+<li><code>:host</code> który się nie obraca, dolna część,</li>
+<li><code>part=knob</code> czyli część obrotowa (w niej umieszczony jest slot),</li>
+<li><code>part=shine</code>, czyli nieobrotowa warstwa nad <code>knob</code>
+(może być używana do symulacji światła/cienia).</li>
+</ul>
+<p>Przykłady użycia znaleźć można pod adresem <a href="https://scheibig.github.io/Web-Components/knob/">https://scheibig.github.io/Web-Components/knob/</a></p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="ComponentKnob"><span class="type-signature"></span>new ComponentKnob<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tworzy nowy <em>Element</em> reprezentujący ten komponent, tworzy <em>shadow DOM</em> używając
+<em>template</em>, oraz wykonuje stałe powiązanie metod klasy z jej instancją.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=""><span class="type-signature"></span><span class="type-signature"> :Position</span></h4>
+
+
+
+
+<div class="description">
+    <p>Oblicza bezwzględną lokalizację środka pokrętła na ekranie monitora.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Position</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line420">line 420</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="cursor"><span class="type-signature">(private) </span>cursor<span class="type-signature"> :Position</span></h4>
+
+
+
+
+<div class="description">
+    <p>Obecna pozycja kursora myszy.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Position</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="from"><span class="type-signature"></span>from<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>from</code> komponentu.</p>
+<p>Definiuje kąt początkowy od którego liczona jest wartość pokrętła; w trybie jednoobrotowym
+dodatkowo definiuje początek ograniczonego zakresu obrotu pokrętła.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>0</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line259">line 259</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="infinite"><span class="type-signature"></span>infinite<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>infinite</code> komponentu.</p>
+<p>Reprezentuje tryb enkodera.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line392">line 392</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="isRotating"><span class="type-signature">(private) </span>isRotating<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Flaga używana przez obsługę <em>Event</em>'ów do reprezentacji aktualnie obracanego pokrętła.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="knob"><span class="type-signature">(private) </span>knob<span class="type-signature"> :HTMLDivElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Uchwyt do obracającej się części komponentu gałki.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLDivElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line180">line 180</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="lap"><span class="type-signature"></span>lap<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>lap</code> komponentu.</p>
+<p>W trybie potencjometru wieloobrotowego, atrybut ten definiuje jaki przyrost wartości
+uzyskiwany jest na każdy pełny obrót pokrętła - a więc nie może przyjmować wartości
+mniejszych niż różnica <code>max - min</code>; w pozostałych trybach, atrybut ten jest ignorowany, a
+jego wartość używana jest do przechowywania zmiennych pomocniczych przy obliczeniach - stąd
+nie zalecane jest w takiej sytuacji używać jej bezpośrednio.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line322">line 322</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="max"><span class="type-signature"></span>max<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>max</code> komponentu.</p>
+<p>Górna granica zakresu wartości przyjmowanych przez pokrętło.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>360</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line306">line 306</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="min"><span class="type-signature"></span>min<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>min</code> komponentu.</p>
+<p>Dolna granica zakresu wartości przyjmowanych przez pokrętło.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>0</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line292">line 292</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="onrotate"><span class="type-signature"></span>onrotate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>onrotate</code> komponentu.</p>
+<p>Definiuje obsługę <em>Event</em>'u zmiany wartości pokrętła; używanie atrybutu nie jest zalecane.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line408">line 408</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="positions"><span class="type-signature"></span>positions<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>positions</code> komponentu.</p>
+<p>Zawiera listę pozycji (<code>Array</code> jako właściwość, lista po przecinku jako atrybut) które może
+przyjmować pokrętło (implikuje typ cyfrowy lub dyskretny); lista powinna zawierać wartości
+unikalne, posortowane rosnąco oraz nie wykraczające poza zakres dozwolonych wartości.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line359">line 359</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="prevAngle"><span class="type-signature">(private) </span>prevAngle<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Poprzedni kąt między &quot;północą&quot; pokrętła, środkiem pokrętła, a lokalizacją kursora myszy.</p>
+<p>Wartość używana jest przy wyliczaniu zmian w pozycji pokrętła.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line196">line 196</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="sticky"><span class="type-signature"></span>sticky<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>sticky</code> komponentu.</p>
+<p>Zmienia pokrętło dyskretne w pokrętło cyfrowe.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line375">line 375</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="to"><span class="type-signature"></span>to<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>to</code> komponentu.</p>
+<p>W trybie jednoobrotowym, definiuje koniec ograniczonego zakresu obrotu pokrętła.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>null</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line275">line 275</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="value"><span class="type-signature">(private) </span>value<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Wewnętrzna wartość gałki - od zewnętrznej różni się tym, że w typie cyfrowym, wartość
+wewnętrzna mapuje kąt obrotu gałki, podczas gdy wartość zewnętrzna reprezentuje najbliższą
+pozycję.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line188">line 188</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="value"><span class="type-signature"></span>value<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Właściwość klasy delegowana to <em>atrybutu HTML</em> <code>value</code> komponentu.</p>
+<p>Reprezentuje zewnętrzną / postrzeganą wartość pokrętła - ta zawsze znajdować się będzie
+w zakresie <code>min..max</code></p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line244">line 244</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="windowContextMenuHandler"><span class="type-signature">(private) </span>windowContextMenuHandler<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Cache używany do przechowywania globalnej obsługi <em>Event</em>'u menu kontekstowego, który
+blokowany jest w trakcie obracania pokrętła.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line216">line 216</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>Element#oncontextmenu</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".observedAttributes"><span class="type-signature">(static) </span>observedAttributes<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Getter definiujący listę automatycznie obserwowanych atrybutów komponentów, tj:</p>
+<ul>
+<li><code>value</code>,</li>
+<li><code>from</code>,</li>
+<li><code>to</code>,</li>
+<li><code>min</code>,</li>
+<li><code>max</code>,</li>
+<li><code>lap</code>,</li>
+<li><code>positions</code>,</li>
+<li><code>sticky</code>,</li>
+<li><code>infinite</code>,</li>
+<li><code>onrotate</code>.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line232">line 232</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="attributeChangedCallback"><span class="type-signature"></span>attributeChangedCallback<span class="signature">(name, prev<span class="signature-attributes">nullable</span>, value<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Uchwyt cyklu życia komponentu, odpowiedzialny za obsługę zdarzenia, którym jest zmiana
+wartości obserwowanego atrybutu komponentu.</p>
+<p>Obsługa atrybutów:</p>
+<p>-<code>positions</code>: parsuje i sprawdza poprawność listy przekazanych pozycji ,</p>
+<ul>
+<li><code>min</code> / <code>max</code>: sprawdza poprawność definicji zakresu (<code>min &lt;= max</code>),</li>
+<li><code>from</code> / <code>to</code>: sprawdza czy kąty zawieraja się w podstawowym zakresie (<code>0..360</code>),</li>
+<li><code>value</code>: jeśli pokrętło nie jest obecnie obracane, synchronizuje stan wewnętrzny do nowej
+wartości.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Nazwa zmienionego atrybutu</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prev</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Tekstowa reprezentacja poprzedniej wartości przed zmianą</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Tekstowa reprezentacja nowej wartości</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line488">line 488</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="connectedCallback"><span class="type-signature"></span>connectedCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Uchwyt cyklu życia komponentu, odpowiedzialny za obsługę zdarzenia, którym jest instalacja
+komponentu w <em>DOM</em>.</p>
+<p>Synchronizuje wartości początkowe pól wewnętrznych, oraz instaluje obsługę <em>Event</em>'ów myszy.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line454">line 454</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="disconnectedCallback"><span class="type-signature"></span>disconnectedCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Uchwyt cyklu życia komponentu, odpowiedzialny za obsługę zdarzenia, którym jest usunięcie
+komponentu w <em>DOM</em>.</p>
+<p>Usuwa obsługę <em>Event</em>'ów myszy.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line468">line 468</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseDownHandler"><span class="type-signature"></span>mouseDownHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Obsługa <em>Event</em>'u wciśnięcia lewego klawisza myszy na pokrętle.</p>
+<p>Inicjalizuje obliczenia i wprowadza pokrętło w tryb obrotu; instaluje globalną obsługę
+Event*'ów na potrzeby wykrywania pozycji kursora.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stan zdarzenia</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line550">line 550</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>rotateBegin</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseMoveHandler"><span class="type-signature"></span>mouseMoveHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Obsługa <em>Event</em>'u poruszania kursorem w trakcie trzymania lewego klawisza myszy na pokrętle.</p>
+<p>Oblicza nową pozycję pokrętła, na podstawie zmiany położenia kursora - wskaźnik pozycji
+potencjometru stara się &quot;celować w kursor&quot;.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stan zdarzenia</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line572">line 572</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>rotateChange</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseUpHandler"><span class="type-signature"></span>mouseUpHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Obsługa <em>Event</em>'u puszczenia lewego klawisza myszy po obracaniu pokrętła.</p>
+<p>Wyprowadza pokrętło z trybu obrotu, jak i usuwa globalną obsługę <em>Event</em>'ów.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stan zdarzenia</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line591">line 591</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>rotateEnd</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateBegin"><span class="type-signature"></span>rotateBegin<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Ustawia stan początkowy zmiennych obliczeniowych, używanych do obliczania pozycji pokrętła,
+jak i ustawia niezbędne flagi stanu oraz zmienia style CSS na te charakteryzujące obracane
+pokrętło.</p>
+<p>Tymczasowo zdejmuje globalną obsługę <em>Event</em>'u <code>contextmenuhandler</code>, przechowując jej stan
+wewnątrz obiektu.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line609">line 609</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-knob-ComponentKnob.html#windowContextMenuHandler">#windowContextMenuHandler</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateChange"><span class="type-signature"></span>rotateChange<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Oblicza zmiany w wartościach zewnętrznych, jak i wewnętrznych pokrętła, w szczególności
+ustawiając zewnętrzną wartość pokrętła na najbliższą pozycję (typ cyfrowy / dyskretny).</p>
+<p>Po synchronizacji kąta obrotu, wysyła <em>Event</em> informujący o zmianie wartości pokrętła.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line638">line 638</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>KnobValueChangeEvent</li>
+        
+            <li>syncValueAngle</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateEnd"><span class="type-signature">(async) </span>rotateEnd<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Kończy obracanie pokrętła, przywracając stan wyjściowy.</p>
+<p>W trybach cyfrowym i dyskretnym przeprowadzana jest synchronizacja kąta (oraz mapującej go
+wartości wewnętrznej obiektu) z powrotem do zakresu <code>0..&lt;360</code> stopni.</p>
+<p>W trybie cyfrowym, synchronizacja jest przeprowadzana z zachowaniem &quot;magnetycznej&quot; animacji.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line731">line 731</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="syncValueAngle"><span class="type-signature"></span>syncValueAngle<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Synchronizuje kąt obrotu pokrętła z wartością pokrętła, przez ustawienia zmiennej CSS.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line811">line 811</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-audio.html">audio</a></li><li><a href="module-definitions.html">definitions</a></li><li><a href="module-flame.html">flame</a></li><li><a href="module-knob.html">knob</a></li><li><a href="module-mainScript.html">mainScript</a></li><li><a href="module-panel.html">panel</a></li></ul><h3>Namespaces</h3><ul><li><a href="MathX.html">MathX</a></li></ul><h3>Classes</h3><ul><li><a href="module-audio-AudioInterface.html">AudioInterface</a></li><li><a href="module-definitions-FaceGraph.html">FaceGraph</a></li><li><a href="module-definitions-FaceNode.html">FaceNode</a></li><li><a href="module-definitions-Faces.html">Faces</a></li><li><a href="module-flame-ComponentFlame.html">ComponentFlame</a></li><li><a href="module-knob-ComponentKnob.html">ComponentKnob</a></li><li><a href="module-knob-KnobValueChangeEvent.html">KnobValueChangeEvent</a></li><li><a href="module-knob-Position.html">Position</a></li><li><a href="module-panel-ComponentPanel.html">ComponentPanel</a></li><li><a href="module-panel-PanelPauseOvenEvent.html">PanelPauseOvenEvent</a></li><li><a href="module-panel-PanelStartOvenEvent.html">PanelStartOvenEvent</a></li><li><a href="module-panel-PanelStopOvenEvent.html">PanelStopOvenEvent</a></li><li><a href="module-panel-Time.html">Time</a></li></ul><h3>Global</h3><ul><li><a href="global.html#html">html</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jan 29 2024 05:22:02 GMT+0100 (czas środkowoeuropejski standardowy)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: script/definitions.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,48 +17,129 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: script/definitions.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>KCK Kuchenka</h1>
-<p><img src="./resources/View.png" alt=""></p>
-<h3>Projekt realizowany w ramach przedmiotu Komunikacja Człowiek-Komputer, w grupie:</h3>
-<h4>Marcin Jeznach 241204</h4>
-<h4>Stanisław Horna 241202</h4>
-<p>Repozytorium zawiera kod źródłowy projektu, budowany w oparciu o natywnie dostępne w przeglądarkach
-Internetowych technologie Web'owe, bez użycia dodatkowego procesu budowy / bundle'owania /
-kompilacji kodu - tym samym kod źródłowy jest jednocześnie kodem wykonywanym.</p>
-<p>Dostęp do Demo <a href="">dostępny jest pod tym linkiem</a>, używającym usługi GitHub Pages podpiętej do tego
-repozytorium.</p>
-<p>Dokumentacja projektowa, znajduje się w pliku <a href="./KCK.pdf">KCK.pdf</a>.</p>
-<p>Dokumentacja kodu źródłowego <a href="">dostępna jest pod tym linkiem</a> - host'owana jest w ramach tej samej
-instancji GitHub Pages.</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module definitions */
+
+/**
+ * Reprezentuje zestaw uchwytów do elementów `&lt;div>`, zawierających wszystkie 6 ścian urządzenia.
+ */
+class Faces {
+    /** 
+     * Górna ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    up
+    /** 
+     * Dolna ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    down
+    /** 
+     * Lewa ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    left
+    /** 
+     * Prawa ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    right
+    /** 
+     * Przednia ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    front
+    /** 
+     * Tylna ściana urządzenia
+     * @type {HTMLDivElement}
+     */
+    back
+}
+
+/**
+ * Reprezentuje zestaw uchwytów do elementów `&lt;div>`, zawierających ściany sąsiadujące z daną
+ * ścianą. Nazwy ścian reprezentują kierunek przejścia między nimi.
+ */
+class FaceNode {
+    /**
+     * Bieżąca ściana
+     * @type {HTMLDivElement}
+     */
+    face
+    /** 
+     * Ściana w górę
+     * @type {FaceNode}
+     */
+    up
+    /** 
+     * Ściana w dół
+     * @type {FaceNode}
+     */
+    down
+    /** 
+     * Ściana w lewo
+     * @type {FaceNode}
+     */
+    left
+    /** 
+     * Ściana w prawo
+     * @type {FaceNode}
+     */
+    right
+}
+
+/**
+ * Reprezentuje graf przejść między kolejnymi ścianami urządzenia.
+ */
+class FaceGraph {
+    /** 
+     * Górny węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    up
+    /** 
+     * Dolny węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    down
+    /** 
+     * Lewy węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    left
+    /** 
+     * Prawy węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    right
+    /** 
+     * Przedni węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    front
+    /** 
+     * Tylny węzeł urządzenia
+     * @type {FaceNode} 
+     */
+    back
+}
+
+export {
+    Faces,
+    FaceNode,
+    FaceGraph
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

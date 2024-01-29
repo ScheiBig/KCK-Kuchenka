@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: ComponentKnob</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: ComponentKnob</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>ComponentKnob<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>This component represents a knob, that provides interaction via rotation.</p>
+<p>Knob operates, by being rotated using mouse - when you press and hold left mouse button,<br>
+the knob will rotate in a way, that knob marker points to cursor position. Current value can be
+tracked directly via <code>value</code> property, or reactively via <code>rotate</code> event. Knob assumes, that you
+rotate clockwise from <code>min</code> to <code>max</code> value.</p>
+<p>Knob can operate in nine different ways, as configured using its properties - knob behavior can
+be separated into two classes:</p>
+<ol>
+<li>
+<p>What device is being simulated.<br>
+Knob can be placed either on encoder (infinite rotation mode) which can rotate infinitely,
+or on potentiometer (bound rotation mode) - either less-than or single turn, or multi-turn.</p>
+<p>1.1. In &quot;encoder mode&quot;, knob can rotate freely, without start and end positions. In this mode,
+<code>value</code> will be set between <code>min</code> and <code>max</code>, wrapping from one extreme to the other when
+passing <code>from</code> angle.</p>
+<p>1.2. In &quot;multi turn potentiometer mode&quot;, knob can achieve only set amount
+of movement - <code>value</code>s from <code>min</code> to <code>max</code>, and stopping rotation past those points.
+Knob can achieve multiple turns, which correlates with <code>lap</code> property, that describes
+&quot;by how much <code>value</code> changes each full rotation of the knob&quot;.</p>
+<p>1.3. In &quot;single turn potentiometer mode&quot;, knob can only rotate between angles <code>from</code> and to<code>.      In this mode, either full rotation can be achieved (</code>from === to`), or only part of it.</p>
+</li>
+<li>
+<p>What &quot;type&quot; of device is being simulated.<br>
+Knob can either be placed on analog device, that can rotate freely, discrete device which only
+can achieve certain angles, on digital one, which while rotating like analog one, can still
+only achieve one of positions, that it will snap to.</p>
+<p>2.1. As &quot;analog type&quot;, knob can rotate into any possible position, and so <code>value</code> can be any
+real (float) number between <code>min</code> and <code>max</code>.</p>
+<p>2.2. As &quot;discrete type&quot;, knob can only achieve values, that are passed to <code>positions</code> property
+(attribute is comma-separated list of possible positions, while field is array of those),
+so rotation of knob happens only on boundaries between any two neighboring positions.</p>
+<p>2.3. As &quot;digital type&quot;, knob can still rotate like analog device when being held onto (while
+mouse is pressed), but when you let go of it, it will snap back to the nearest position.
+In this type, underlying <code>value</code> behaves exactly like in discrete type, smooth rotation
+is only visual.</p>
+</li>
+</ol>
+<p>For every knob mode/type, you can specify these properties:</p>
+<ul>
+<li><code>from</code> - starting angle in degrees, in range [0, 360); defaults to 0</li>
+<li><code>min</code> - minimal number that <code>value</code> can achieve; defaults to 0</li>
+<li><code>value</code> - current value that knob represents; defaults to <code>min</code></li>
+<li><code>max</code> - maximal number that <code>value</code> can achieve; defaults to 360</li>
+</ul>
+<p>Keep in mind, that you must abide by contract: <code>min</code> &lt;= <code>value</code> &lt;= <code>max</code> - otherwise Error
+will be thrown.</p>
+<p>Additional properties define exactly what behavior knob will provide, in this priority:</p>
+<p>For modes:</p>
+<ul>
+<li><code>infinite</code> - if attribute is present, or property set to true, knob will always behave in
+&quot;encoder mode&quot; - properties <code>lap</code> and <code>to</code> will be ignored even if present;
+defaults to <code>null</code> (not truthy).</li>
+<li><code>to</code> - if <code>infinite</code> attribute is missing / set to false, and <code>to</code> is set, then knob will
+always behave in &quot;single turn potentiometer mode&quot; - property <code>lap</code> will be ignored;
+defaults to <code>null</code>.</li>
+<li><code>lap</code> - if <code>infinite</code> is missing / false and <code>to</code> is missing (<code>null</code>/<code>undefined</code>), then
+knob will always behave in &quot;single turn potentiometer mode&quot;; defaults to <code>mix - min</code>.</li>
+</ul>
+<p>For types:</p>
+<ul>
+<li><code>positions</code> - attribute, if set, must be set to comma-delimited list of unique values, while
+field will be represented as array of those values, in such case knob will operate either as
+&quot;discrete type&quot; or &quot;digital type&quot;, depending on <code>sticky</code> property; defaults to <code>null</code>.</li>
+<li><code>sticky</code> - attribute, if present / field set to true, will specify &quot;digital type&quot;, while
+otherwise, knob will be of &quot;discrete type&quot;; defaults to <code>null</code> (not truthy), and will
+be ignored if <code>positions</code> is missing.</li>
+</ul>
+<p>When <code>positions</code> attribute is missing, knob is of <code>analog type</code>.</p>
+<hr>
+<p>As Component, <code>&lt;x-knob&gt;</code> provides one <code>slot</code>, that replaces knob marker (wiper) if filled;
+also two <code>part</code>s are specified on top of <code>:host</code>:</p>
+<ul>
+<li><code>:host</code> which is not-rotating, bottom part,</li>
+<li><code>part=knob</code> which is rotating part (slot is placed in it),</li>
+<li><code>part=shine</code> which is not-rotating layer above <code>knob</code> (can be used to simulate light/shadow).</li>
+</ul></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="ComponentKnob"><span class="type-signature"></span>new ComponentKnob<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="cursor"><span class="type-signature">(private) </span>cursor<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line229">line 229</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="isRotating"><span class="type-signature">(private) </span>isRotating<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line231">line 231</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="knob"><span class="type-signature">(private) </span>knob<span class="type-signature"> :HTMLDivElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Uchwyt do obracającej się części komponentu gałki</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLDivElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line223">line 223</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="prevAngle"><span class="type-signature">(private) </span>prevAngle<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line227">line 227</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="value"><span class="type-signature">(private) </span>value<span class="type-signature"> :number</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="attributeChangedCallback"><span class="type-signature"></span>attributeChangedCallback<span class="signature">(name, prev, value)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Lifecycle hook for handling change of attribute</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name used to represent attribute</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prev</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Previous value of attribute</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>New value that attribute changed to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line407">line 407</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="connectedCallback"><span class="type-signature"></span>connectedCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Lifecycle hook for handling installation of component</p>
+<p>Syncs initial value and installs events</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line384">line 384</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="disconnectedCallback"><span class="type-signature"></span>disconnectedCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Lifecycle hook for handling removal of component</p>
+<p>Removes events</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line397">line 397</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseDownHandler"><span class="type-signature"></span>mouseDownHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event handler for beginning Left-Click on knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line463">line 463</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseMoveHandler"><span class="type-signature"></span>mouseMoveHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event handler for moving cursor while holding knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line478">line 478</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseUpHandler"><span class="type-signature"></span>mouseUpHandler<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event handler for letting go of knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>e</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line491">line 491</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateBegin"><span class="type-signature"></span>rotateBegin<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Sets up rotation of knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line502">line 502</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateChange"><span class="type-signature"></span>rotateChange<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Handles rotation of knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line525">line 525</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="rotateEnd"><span class="type-signature">(async) </span>rotateEnd<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finalizes rotation of knob</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_knob.js.html">components/knob.js</a>, <a href="components_knob.js.html#line607">line 607</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-flame.html">flame</a></li></ul><h3>Namespaces</h3><ul><li><a href="MathX.html">MathX</a></li></ul><h3>Classes</h3><ul><li><a href="ComponentKnob.html">ComponentKnob</a></li><li><a href="ComponentPanel.html">ComponentPanel</a></li><li><a href="KnobValueChangeEvent_KnobValueChangeEvent.html">KnobValueChangeEvent</a></li><li><a href="module-flame-ComponentFlame.html">ComponentFlame</a></li></ul><h3>Global</h3><ul><li><a href="global.html#documentSparkLetGoHandler">documentSparkLetGoHandler</a></li><li><a href="global.html#html">html</a></li><li><a href="global.html#knobSparkHandler">knobSparkHandler</a></li><li><a href="global.html#knobValueChangeHandler">knobValueChangeHandler</a></li><li><a href="global.html#panel">panel</a></li><li><a href="global.html#programKnob">programKnob</a></li><li><a href="global.html#temperatureKnob">temperatureKnob</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Jan 28 2024 21:17:25 GMT+0100 (czas środkowoeuropejski standardowy)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

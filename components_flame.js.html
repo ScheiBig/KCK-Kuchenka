@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/flame.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/flame.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module flame  */
+
+/**
+ * Tworzony element ustawiany ma od razu odpowiednią klasę CSS do renderowania wyglądu płomienia,
+ * jak i przypisaną mu zmienną CSS która kontroluje obrót płomienia względem środka palnika.
+ * @param {number} deg Wyrażony w stopniach kąt obrotu
+ * @returns Utworzony element (`&lt;div>`), który można wstawić do *DOM*
+ */
+function flame(deg) {
+    let e = document.createElement("div")
+    e.className = "flame"
+    e.style.setProperty("--r", `${deg}deg`)
+    return e
+}
+
+/**
+ * Klasa definiująca komponent, który reprezentuje płomienie palnika gazowego.
+ * 
+ * Płomienie opakowane są jako komponent, ze względu na dość dużą ilość pojedynczych 
+ * płomieni wydostających się z palnika - ich tworzenie oraz dodawanie jest procesem żmudnym, 
+ * który wewnątrz komponentu można zawrzeć w pętli `for`.
+ * 
+ * W arkuszu styli, dodatkowo używana jest jeszcze jedna zmienna, która odpowiada za 
+ * "wysuwanie płomieni spod palnika" - jest to zmienna CSS `--show` z zakresem `0..1`. Warto
+ * nadmienić że zachowanie to nie jest zdefiniowane w tym komponencie, a w arkuszu styli (ten
+ * komponent nie definiuje *shadow dom*, co oznacza że elementy są dostępne z zewnątrz).
+ * 
+ * @example
+ * &lt;!-- Tworzy płomienie pod palnikiem z 24 dyszami -->
+ * &lt;x-flame times="24" style="--show: 1;">&lt;/x-flame>
+ */
+class ComponentFlame extends HTMLElement {
+
+    /**
+     * Właściwość klasy delegowana to *atrybutu HTML* `times` komponentu.
+     * 
+     * Reprezentuje liczbę płomieni wydostających się z palnika gazowego (liczbę dysz palnika).
+     */
+    get times() {
+        return this.hasAttribute("times") ? parseInt(this.getAttribute("times")) : null
+    }
+    set times(value) {
+        this.setAttribute("times", parseInt(value))
+    }
+
+    /**
+     * Getter definiujący listę automatycznie obserwowanych atrybutów komponentów, tj:
+     * 
+     * - `times`
+     */
+    static get observedAttributes() {
+        return [ "times" ]
+    }
+
+    /**
+     * Konstruktor domyślny - deleguje tworzenie elementu HTML do klasy nadrzędnej; żadne dodatkowe
+     * zachowanie nie jest zdefiniowane.
+     */
+    constructor() {
+        super()
+    }
+
+    /**
+     * Uchwyt cyklu życia komponentu, odpowiedzialny za obsługę zdarzenia, którym jest zmiana
+     * wartości obserwowanego atrybutu komponentu.
+     * 
+     * Obsługa atrybutów:
+     * 
+     * -`times`: przy zmianie usuwa poprzednią zawartość komponentu i tworzy nowy zestaw płomieni,
+     *  w ilości zdefiniowanej przez atrybut.
+     *  **UWAGA** - ze względu na prymitywność komponentu, nie wykonywane jest "sprzątanie"
+     * (odpinanie obsługi *Event*'ów itp.).
+     * 
+     * @param {string} name Nazwa zmienionego atrybutu
+     * @param {string?} prev Tekstowa reprezentacja poprzedniej wartości przed zmianą
+     * @param {string?} value Tekstowa reprezentacja nowej wartości
+     */
+    attributeChangedCallback(name, prev, value) {
+        if (name != "times") { return }
+        if (prev === value) { return }
+
+        const times = this.times
+        this.innerHTML = ""
+        const degDiff = 360.0 / times
+
+        for (let i = 0; i &lt; times; i++) {
+            this.appendChild(flame(degDiff * i))
+        }
+    }
+}
+customElements.define("x-flame", ComponentFlame)
+
+export default ComponentFlame
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-audio.html">audio</a></li><li><a href="module-definitions.html">definitions</a></li><li><a href="module-flame.html">flame</a></li><li><a href="module-knob.html">knob</a></li><li><a href="module-mainScript.html">mainScript</a></li><li><a href="module-panel.html">panel</a></li></ul><h3>Namespaces</h3><ul><li><a href="MathX.html">MathX</a></li></ul><h3>Classes</h3><ul><li><a href="module-audio-AudioInterface.html">AudioInterface</a></li><li><a href="module-definitions-FaceGraph.html">FaceGraph</a></li><li><a href="module-definitions-FaceNode.html">FaceNode</a></li><li><a href="module-definitions-Faces.html">Faces</a></li><li><a href="module-flame-ComponentFlame.html">ComponentFlame</a></li><li><a href="module-knob-ComponentKnob.html">ComponentKnob</a></li><li><a href="module-knob-KnobValueChangeEvent.html">KnobValueChangeEvent</a></li><li><a href="module-knob-Position.html">Position</a></li><li><a href="module-panel-ComponentPanel.html">ComponentPanel</a></li><li><a href="module-panel-PanelPauseOvenEvent.html">PanelPauseOvenEvent</a></li><li><a href="module-panel-PanelStartOvenEvent.html">PanelStartOvenEvent</a></li><li><a href="module-panel-PanelStopOvenEvent.html">PanelStopOvenEvent</a></li><li><a href="module-panel-Time.html">Time</a></li></ul><h3>Global</h3><ul><li><a href="global.html#html">html</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Jan 29 2024 05:22:02 GMT+0100 (czas środkowoeuropejski standardowy)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
