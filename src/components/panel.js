@@ -151,12 +151,12 @@ button {
 /**
  * Dźwięk "pikania" klawiszy piekarnika w przypadku gdy wciśnięcie powoduje jakąś zmianę.
  */
-const beep = new Audio("../resources/Button Beep Sound Effect.mp3")
+const beep = new Audio("./resources/Button Beep Sound Effect.mp3")
 
 /**
  * Dźwięk dzwonka (a'la minutnik kuchenny) używany przy zakończeniu pieczenia.
  */
-const ring = new Audio("../resources/toaster oven ding  sound effect.mp3")
+const ring = new Audio("./resources/toaster oven ding  sound effect.mp3")
 
 beep.volume = 0.2
 ring.volume = 0.5
